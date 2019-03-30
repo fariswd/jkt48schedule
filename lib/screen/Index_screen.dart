@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 import '../screen/detail_screen.dart';
 import '../screen/about_screen.dart';
 
-import '../constant/dummy.dart';
+// import '../constant/dummy.dart';
 import '../utils/image_show_parser.dart';
 
-class IndexScreen extends StatelessWidget {
+class IndexScreen extends StatefulWidget {
+  @override
+  _IndexScreenState createState() => _IndexScreenState();
+}
+
+class _IndexScreenState extends State<IndexScreen> {
+  List data = [];
+
+  Future fetchData() async {
+    http.Response result = await http.get(
+      'https://us-central1-fyuu-fyuu.cloudfunctions.net/schedule/',
+      headers: {'Accept': 'application/json'},
+    );
+
+    this.setState(() {
+      data = json.decode(result.body);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +80,9 @@ class IndexScreen extends StatelessWidget {
         color: Colors.grey[200],
         padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
         child: ListView.builder(
-          itemCount: dummy.length,
+          itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return CardShow(index: index);
+            return CardShow(index: index, data: data);
           },
         ),
       ),
@@ -65,13 +92,13 @@ class IndexScreen extends StatelessWidget {
 
 class CardShow extends StatelessWidget {
   final int index;
+  final List data;
 
-  CardShow({this.index});
-
-  final List reverseData = dummy.reversed.toList();
+  CardShow({this.index, this.data});
 
   @override
   Widget build(BuildContext context) {
+    List reverseData = data.reversed.toList();
     double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
