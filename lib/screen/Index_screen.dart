@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../screen/detail_screen.dart';
 import '../screen/about_screen.dart';
+import '../screen/privacy_screen.dart';
 
 // import '../constant/dummy.dart';
 import '../utils/image_show_parser.dart';
@@ -28,40 +31,120 @@ class _IndexScreenState extends State<IndexScreen> {
     });
   }
 
+  Widget get _loadingView {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     fetchData();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('JKT48 Theater Schedule'),
         elevation: 0.0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF5453A0),
+                Color(0xFFE46262),
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+        ),
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the Drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text(
-                'JKT48 Theater\nSchedule',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'http://oi64.tinypic.com/fyemow.jpg'),
+                          backgroundColor: Colors.grey[400],
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 3)),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'http://oi67.tinypic.com/atns4l.jpg'),
+                          backgroundColor: Colors.grey[400],
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 3)),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'http://oi64.tinypic.com/33vg749.jpg'),
+                          backgroundColor: Colors.grey[400],
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 3)),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'http://oi64.tinypic.com/35l90go.jpg'),
+                          backgroundColor: Colors.grey[400],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                    ),
+                    Text(
+                      'JKT48 Theater Schedule',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF5453A0),
+                    Color(0xFFE46262),
+                  ],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 1.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                ),
               ),
             ),
             ListTile(
+              leading: Icon(Icons.book),
+              title: Text('Privacy Policy'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PrivacyScreen(),
+                  ),
+                );
+              },
+            ),
+            Divider(height: 1),
+            ListTile(
+              leading: Icon(Icons.info),
               title: Text('About'),
               onTap: () {
                 Navigator.of(context).pop();
@@ -73,19 +156,22 @@ class _IndexScreenState extends State<IndexScreen> {
                 );
               },
             ),
+            Divider(height: 1),
           ],
         ),
       ),
-      body: Container(
-        color: Colors.grey[200],
-        padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-        child: ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return CardShow(index: index, data: data);
-          },
-        ),
-      ),
+      body: data.length == 0
+          ? _loadingView
+          : Container(
+              color: Colors.grey[200],
+              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+              child: ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CardShow(index: index, data: data);
+                },
+              ),
+            ),
     );
   }
 }
@@ -113,8 +199,9 @@ class CardShow extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.network(
-              imageParser(reverseData[index]['title']),
+            FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: imageParser(reverseData[index]['title']),
               height: 140.0,
             ),
             Padding(
@@ -135,14 +222,15 @@ class CardShow extends StatelessWidget {
                       ),
                       Text(reverseData[index]['team']),
                       SizedBox(
-                        width: 200,
+                        width: 190,
                         child: Text(
                           '${reverseData[index]['title']}',
                           style: Theme.of(context).textTheme.title,
                         ),
                       ),
                       Text(
-                          '${reverseData[index]['showDay']} ${reverseData[index]['showDate']} - ${reverseData[index]['showTime']}WIB'),
+                          '${reverseData[index]['showDay']} ${reverseData[index]['showDate']}'),
+                      Text('Show ${reverseData[index]['showTime']}WIB'),
                     ],
                   ),
                   Container(
@@ -151,15 +239,15 @@ class CardShow extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
+                        color: Color(0xFFdc4b50),
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
                       ),
                       child: Center(
                         child: Text(
-                          'Lihat Detail',
-                          style: TextStyle(color: Colors.white),
+                          'SHOW DETAIL',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
                     ),
@@ -171,5 +259,14 @@ class CardShow extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+_launchURL() async {
+  const url = 'https://github.com/fariswd/jkt48schedule';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

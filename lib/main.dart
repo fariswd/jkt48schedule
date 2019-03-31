@@ -7,10 +7,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'jkt48schedule',
+      title: 'JKT48 Theater Schedule',
       home: IndexScreen(),
       theme: ThemeData(
-        primaryColor: Colors.red[800],
+        primaryColor: Color(0xFFdc4b50),
         accentColor: Colors.redAccent[700],
         fontFamily: 'Montserrat',
         textTheme: TextTheme(

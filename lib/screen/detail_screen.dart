@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:transparent_image/transparent_image.dart';
+
 import '../utils/image_show_parser.dart';
 import '../constant/member.dart';
 
@@ -15,6 +17,7 @@ class DetailScreen extends StatelessWidget {
         Container(
           child: CircleAvatar(
             backgroundImage: NetworkImage(memberList[member[i]]['image']),
+            backgroundColor: Colors.grey[400],
             radius: width / 17,
           ),
         ),
@@ -25,7 +28,7 @@ class DetailScreen extends StatelessWidget {
         list.add(
           Icon(
             Icons.person,
-            size: width / 9,
+            size: width / 9 + 1.8,
             color: Colors.grey[500],
           ),
         );
@@ -42,10 +45,12 @@ class DetailScreen extends StatelessWidget {
         ListTile(
           leading: CircleAvatar(
             backgroundImage: NetworkImage(memberList[member[i]]['image']),
+            backgroundColor: Colors.grey[400],
           ),
           title: Text(member[i]),
         ),
       );
+      list.add(Divider(height: 1));
     }
     if (length == 0) {
       list.add(
@@ -76,6 +81,20 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
         elevation: 0.0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF5453A0),
+                Color(0xFFE46262),
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+        ),
       ),
       body: Container(
         width: double.infinity,
@@ -93,13 +112,14 @@ class DetailScreen extends StatelessWidget {
                   width: double.infinity,
                 ),
                 Container(
-                  transform: Matrix4.translationValues(20.0, -40.0, 0.0),
+                  transform: Matrix4.translationValues(15.0, -40.0, 0.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Image.network(
-                        imageTeam(detail['team']),
-                        height: 100,
+                      FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: imageTeam(detail['team']),
+                        height: 100.0,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
@@ -109,7 +129,7 @@ class DetailScreen extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             '${detail['showDay']} ${detail['showDate']} - ${detail['showTime']}WIB',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 17),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -118,7 +138,12 @@ class DetailScreen extends StatelessWidget {
                           ),
                           Text(
                             'Tukar Tiket: ${detail['exchangeTime']}WIB',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                            ),
                           ),
                         ],
                       ),
@@ -131,10 +156,17 @@ class DetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Daftar member:',
-                        style: Theme.of(context).textTheme.title,
+                      Container(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          'Daftar member:',
+                          style: Theme.of(context).textTheme.title,
+                        ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      Divider(height: 1),
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                       ),
@@ -145,62 +177,70 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  padding: EdgeInsets.fromLTRB(15, 0, 8, 5),
                   child: Text(
                     'Detail Pertunjukan:',
                     style: Theme.of(context).textTheme.title,
                   ),
                 ),
+                Divider(height: 1),
                 ListTile(
-                  leading: Text(
+                  title: Text(
                     'Judul:',
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  trailing: Text(
+                  subtitle: Text(
                     '${detail['title']}',
-                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
+                Divider(height: 1),
                 ListTile(
-                  leading: Text(
+                  title: Text(
                     'Team:',
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  trailing: Text(
+                  subtitle: Text(
                     '${detail['team']}',
-                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
+                Divider(height: 1),
                 ListTile(
-                  leading: Text(
-                    'Waktu Pertunjukan:',
+                  title: Text(
+                    'Waktu:',
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  trailing: Text(
+                  subtitle: Text(
                     '${detail['showDay']} ${detail['showDate']} - ${detail['showTime']} WIB',
-                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
+                Divider(height: 1),
                 ListTile(
-                  leading: Text(
+                  title: Text(
                     'Tukar Tiket:',
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  trailing: Text(
+                  subtitle: Text(
                     '${detail['exchangeTime']} WIB',
-                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
+                Divider(height: 1),
                 ListTile(
-                  leading: Text(
+                  title: Text(
                     'List Member:',
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  trailing: Text(
+                  subtitle: Text(
                     '${detail['showMember'].length} orang',
-                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 15, 8, 5),
+                  child: Text(
+                    'Detail Member:',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                ),
+                Divider(height: 1),
                 Wrap(
                   children: _renderMemberListTile(detail['showMember'], width),
                 ),
@@ -211,7 +251,7 @@ class DetailScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         height: 50,
-        color: Theme.of(context).accentColor,
+        color: Color(0xFFdc4b50),
         child: Material(
           color: Colors.transparent,
           child: InkWell(

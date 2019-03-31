@@ -290,7 +290,7 @@ Map memberList = {
   "Rifa Fatmasari": {
     "image": "https://jkt48.com/images/jkt48-academy/gen7/Rifa-Fatmasari.jpg"
   },
-  "Riska Amelia Put": {
+  "Riska Amelia Putri": {
     "image": "https://jkt48.com/images/jkt48-academy/gen6-100px/riska-amelia-putri-100px.jpg"
   },
   "Shalza Grasita": {
