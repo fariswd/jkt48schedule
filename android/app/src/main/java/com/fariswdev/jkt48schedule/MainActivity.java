@@ -1,4 +1,4 @@
-package com.example.jkt48schedule;
+package com.fariswdev.jkt48schedule;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
