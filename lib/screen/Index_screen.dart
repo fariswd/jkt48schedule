@@ -20,13 +20,13 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   List data = [];
 
-  Future fetchData() async {
+  Future<void> fetchData() async {
     http.Response result = await http.get(
       'https://us-central1-fyuu-fyuu.cloudfunctions.net/schedule/',
       headers: {'Accept': 'application/json'},
     );
 
-    this.setState(() {
+    setState(() {
       data = json.decode(result.body);
     });
   }
@@ -162,7 +162,9 @@ class _IndexScreenState extends State<IndexScreen> {
       ),
       body: data.length == 0
           ? _loadingView
-          : Container(
+          : RefreshIndicator(
+            onRefresh: (){ return fetchData(); },
+            child: Container(
               color: Colors.grey[200],
               padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
               child: ListView.builder(
@@ -172,6 +174,7 @@ class _IndexScreenState extends State<IndexScreen> {
                 },
               ),
             ),
+          ),
     );
   }
 }
