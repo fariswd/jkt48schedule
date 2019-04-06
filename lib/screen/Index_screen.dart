@@ -20,6 +20,8 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   List data = [];
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   Future<void> fetchData() async {
     http.Response result = await http.get(
       'https://us-central1-fyuu-fyuu.cloudfunctions.net/schedule/',
@@ -29,6 +31,8 @@ class _IndexScreenState extends State<IndexScreen> {
     setState(() {
       data = json.decode(result.body);
     });
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text('Schedule updated.')));
   }
 
   Widget get _loadingView {
@@ -46,6 +50,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('JKT48 Theater Schedule'),
         elevation: 0.0,
@@ -163,18 +168,20 @@ class _IndexScreenState extends State<IndexScreen> {
       body: data.length == 0
           ? _loadingView
           : RefreshIndicator(
-            onRefresh: (){ return fetchData(); },
-            child: Container(
-              color: Colors.grey[200],
-              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-              child: ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CardShow(index: index, data: data);
-                },
+              onRefresh: () {
+                return fetchData();
+              },
+              child: Container(
+                color: Colors.grey[200],
+                padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CardShow(index: index, data: data);
+                  },
+                ),
               ),
             ),
-          ),
     );
   }
 }
