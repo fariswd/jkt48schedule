@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:package_info/package_info.dart';
 
 import '../screen/detail_screen.dart';
 import '../screen/about_screen.dart';
@@ -19,6 +20,8 @@ class IndexScreen extends StatefulWidget {
 
 class _IndexScreenState extends State<IndexScreen> {
   List data = [];
+  String version;
+  String buildNumber;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -45,6 +48,10 @@ class _IndexScreenState extends State<IndexScreen> {
   void initState() {
     super.initState();
     fetchData();
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      version = packageInfo.version;
+      buildNumber = packageInfo.buildNumber;
+    });
   }
 
   @override
@@ -160,6 +167,11 @@ class _IndexScreenState extends State<IndexScreen> {
                   ),
                 );
               },
+            ),
+            Divider(height: 1),
+            ListTile(
+              leading: Icon(Icons.verified_user),
+              title: Text('ver. $version.build$buildNumber'),
             ),
             Divider(height: 1),
           ],
