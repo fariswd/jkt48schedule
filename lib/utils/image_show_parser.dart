@@ -1,3 +1,5 @@
+import '../constant/member.dart';
+
 String imageParser(raw) {
   switch (raw) {
     case 'Sambil Menggandeng Erat Tanganku':
@@ -8,6 +10,8 @@ String imageParser(raw) {
       return 'https://jkt48.com/new3/img/setlist17.png';
     case 'Saka Agari':
       return 'https://jkt48.com/new3/img/setlist16.png';
+    case 'Romansa Sang Gadis':
+      return 'https://jkt48.com/new3/img/setlist18.png';
     default:
       return 'https://jkt48.com/new3/img/logo.png';
   }
@@ -23,6 +27,8 @@ String imageLargeParser(raw) {
       return 'https://jkt48.com/images/big_banner_fsi.png';
     case 'Saka Agari':
       return 'https://jkt48.com/images/banner.home.saka.jpg';
+    case 'Romansa Sang Gadis':
+      return 'https://jkt48.com/new3/img/setlist18.png';
     default:
       return 'https://jkt48.com/new3/img/logo.png';
   }
@@ -41,4 +47,12 @@ String imageTeam(raw) {
     default:
       return 'https://jkt48.com/new3/img/logo.png';
   }
+}
+
+String imageMember(name) {
+  var result = memberList[name];
+  if(result == null) {
+    return 'http://oi65.tinypic.com/2ciyoi.jpg';
+  }
+  return result['image'];
 }

@@ -4,6 +4,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../utils/image_show_parser.dart';
 import '../constant/member.dart';
+import '../screen/member_detail_screen.dart';
 
 class DetailScreen extends StatelessWidget {
   final Map detail;
@@ -16,7 +17,7 @@ class DetailScreen extends StatelessWidget {
       list.add(
         Container(
           child: CircleAvatar(
-            backgroundImage: NetworkImage(memberList[member[i]]['image']),
+            backgroundImage: NetworkImage(imageMember(member[i])),
             backgroundColor: Colors.grey[400],
             radius: width / 17,
           ),
@@ -37,17 +38,23 @@ class DetailScreen extends StatelessWidget {
     return list;
   }
 
-  List<Widget> _renderMemberListTile(member, width) {
+  List<Widget> _renderMemberListTile(member, width, context) {
     int length = member.length;
     List<Widget> list = List<Widget>();
     for (var i = 0; i < length; i++) {
       list.add(
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(memberList[member[i]]['image']),
+            backgroundImage: NetworkImage(imageMember(member[i])),
             backgroundColor: Colors.grey[400],
           ),
+          trailing: Icon(Icons.chevron_right),
           title: Text(member[i]),
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => MemberDetailScreen(name: member[i])
+            ));
+          },
         ),
       );
       list.add(Divider(height: 1));
@@ -99,7 +106,6 @@ class DetailScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         color: Colors.grey[200],
-        // padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
         child: ListView(
           children: <Widget>[
             Column(
@@ -242,7 +248,7 @@ class DetailScreen extends StatelessWidget {
                 ),
                 Divider(height: 1),
                 Wrap(
-                  children: _renderMemberListTile(detail['showMember'], width),
+                  children: _renderMemberListTile(detail['showMember'], width, context),
                 ),
               ],
             ),
