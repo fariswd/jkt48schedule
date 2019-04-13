@@ -13,6 +13,11 @@ https://sites.google.com/view/privacy-policy-jkt48-schedule/
 ```
 
 ## Whats New
+### V2.0.1 build 3
+- Event Handle Feature Release
+- Promotion Card Feature
+- API update
+
 ### V2.0.0 build 2
 - New Carousel on Homescreen
 - Member Pages
