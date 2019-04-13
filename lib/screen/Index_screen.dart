@@ -17,6 +17,7 @@ import '../component/left_drawer.dart';
 
 import '../constant/show.dart';
 import '../constant/banner.dart';
+import '../constant/member.dart';
 
 import '../screen/show_more_screen.dart';
 
@@ -34,6 +35,7 @@ class _IndexScreenState extends State<IndexScreen> {
   String buildNumber;
   int current = 0;
   int currentBanner = 0;
+  int currentEvent = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -80,6 +82,14 @@ class _IndexScreenState extends State<IndexScreen> {
     List result = [];
     data.forEach((eachData) {
       if (eachData['title'] == show['title']) result.add(eachData);
+    });
+    return result;
+  }
+
+  List filterEvent() {
+    List result = [];
+    data.forEach((eachData) {
+      if (eachData['isEvent']) result.add(eachData);
     });
     return result;
   }
@@ -148,6 +158,112 @@ class _IndexScreenState extends State<IndexScreen> {
                     child: Stack(children: <Widget>[
                       Image.network(banner['tinyImage'],
                           fit: BoxFit.cover, height: 150.0),
+                    ]),
+                  ),
+                ),
+              );
+            },
+          );
+        }).toList(),
+      ),
+    ];
+  }
+
+  List<Widget> event() {
+    List eventList = filterEvent();
+    return [
+      Container(
+        height: 50,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              'Event:',
+              style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => ShowMoreScreen(
+            //               data: data,
+            //             ),
+            //       ),
+            //     );
+            //   },
+            //   child: Row(
+            //     children: <Widget>[
+            //       Text(
+            //         'Lihat semua',
+            //         style: TextStyle(fontSize: 14),
+            //       ),
+            //       Icon(Icons.chevron_right)
+            //     ],
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+      CarouselSlider(
+        height: 100,
+        viewportFraction: 0.7,
+        // aspectRatio: 2.0,
+        // enlargeCenterPage: true,
+        onPageChanged: (index) {
+          setState(() {
+            current = index;
+          });
+        },
+        items: eventList.map((show) {
+          return Builder(
+            builder: (BuildContext context) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowMoreScreen(
+                            data: eventList,
+                          ),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: Card(
+                    child: Row(children: <Widget>[
+                      Image.network(memberList[show['eventMember']]['image'],
+                          fit: BoxFit.cover, height: 250.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                                padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFdc4b50),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  show['eventName'],
+                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                )),
+                            Text(show['eventMember']),
+                            Text(
+                                '${show['showDay']} ${show['showDate']} ${show['showTime']}'),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.chevron_right)
                     ]),
                   ),
                 ),
@@ -297,6 +413,14 @@ class _IndexScreenState extends State<IndexScreen> {
                     Text('${getTeam(current)}'),
                   ],
                 ),
+              ),
+              event()[0],
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              event()[1],
+              Padding(
+                padding: EdgeInsets.only(top: 30),
               ),
               promotion()[0],
               Padding(

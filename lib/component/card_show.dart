@@ -30,13 +30,13 @@ class CardShow extends StatelessWidget {
             FadeInImage.memoryNetwork(
               placeholder: kTransparentImage,
               image: imageParser(reverseData[index]['title']),
-              height: 140.0,
+              height: 145.0,
             ),
             Padding(
               padding: EdgeInsets.only(left: 5.0),
             ),
             Container(
-              height: 140.0,
+              height: 145.0,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,32 @@ class CardShow extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 5.0),
                       ),
-                      Text(reverseData[index]['team']),
+                      Container(
+                        width: width - 175,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(reverseData[index]['team']),
+                            reverseData[index]['isEvent'] ? Container(
+                              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFdc4b50),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                reverseData[index]['eventName'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13
+                                ),
+                              ),
+                            ) : Container(),
+                          ],
+                        ),
+                      ),
                       SizedBox(
                         width: 190,
                         child: Text(

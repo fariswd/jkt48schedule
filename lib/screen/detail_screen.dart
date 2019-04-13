@@ -51,9 +51,10 @@ class DetailScreen extends StatelessWidget {
           trailing: Icon(Icons.chevron_right),
           title: Text(member[i]),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => MemberDetailScreen(name: member[i])
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MemberDetailScreen(name: member[i])));
           },
         ),
       );
@@ -199,6 +200,16 @@ class DetailScreen extends StatelessWidget {
                     '${detail['title']}',
                   ),
                 ),
+                detail['isEvent'] ? Divider(height: 1) : Container(),
+                detail['isEvent'] ? ListTile(
+                  title: Text(
+                    'Event:',
+                    style: Theme.of(context).textTheme.body1,
+                  ),
+                  subtitle: Text(
+                    '${detail['eventName']} - ${detail['eventMember']}',
+                  ),
+                ) : Container(),
                 Divider(height: 1),
                 ListTile(
                   title: Text(
@@ -248,7 +259,8 @@ class DetailScreen extends StatelessWidget {
                 ),
                 Divider(height: 1),
                 Wrap(
-                  children: _renderMemberListTile(detail['showMember'], width, context),
+                  children: _renderMemberListTile(
+                      detail['showMember'], width, context),
                 ),
               ],
             ),
