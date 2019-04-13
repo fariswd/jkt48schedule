@@ -17,12 +17,12 @@ List showList = [
     "miniBanner": 'https://jkt48.com/new3/img/setlist17.png',
     "team": "Team J",
   },
-  {
-    "title": 'Saka Agari',
-    "banner": 'https://jkt48.com/images/banner.home.saka.jpg',
-    "miniBanner": 'https://jkt48.com/new3/img/setlist16.png',
-    "team": "Team KIII",
-  },
+  // {
+  //   "title": 'Saka Agari',
+  //   "banner": 'https://jkt48.com/images/banner.home.saka.jpg',
+  //   "miniBanner": 'https://jkt48.com/new3/img/setlist16.png',
+  //   "team": "Team KIII",
+  // },
   {
     "title": 'Romansa Sang Gadis',
     "miniBanner": 'https://jkt48.com/new3/img/setlist18.png',
