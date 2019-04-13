@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:package_info/package_info.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -238,8 +239,11 @@ class _IndexScreenState extends State<IndexScreen> {
                   margin: EdgeInsets.all(5.0),
                   child: Card(
                     child: Row(children: <Widget>[
-                      Image.network(memberList[show['eventMember']]['image'],
-                          fit: BoxFit.cover, height: 250.0),
+                      FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: memberList[show['eventMember']]['image'],
+                        width: 57.0,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -255,7 +259,8 @@ class _IndexScreenState extends State<IndexScreen> {
                                 ),
                                 child: Text(
                                   show['eventName'],
-                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13),
                                 )),
                             Text(show['eventMember']),
                             Text(
