@@ -25,6 +25,9 @@ dependencies:
   transparent_image: ^1.0.0
   package_info: ^0.4.0+2
   carousel_slider: ^1.3.0
+  redux:
+  flutter_redux:
+  redux_thunk:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
