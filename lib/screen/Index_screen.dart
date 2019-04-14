@@ -419,11 +419,13 @@ class _IndexScreenState extends State<IndexScreen> {
                   ],
                 ),
               ),
-              event()[0],
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              event()[1],
+              filterEvent().length == 0 ? Container() : event()[0],
+              filterEvent().length == 0
+                  ? Container()
+                  : Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+              filterEvent().length == 0 ? Container() : event()[1],
               Padding(
                 padding: EdgeInsets.only(top: 30),
               ),
